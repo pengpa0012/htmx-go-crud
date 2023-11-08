@@ -9,12 +9,18 @@ type Todo struct {
 	ID     string  `json:"id"`
 	Title  string  `json:"title"`
 	Description  string  `json:"description"`
-	DateCreated  string  `json:"date_created"`
+	DateCreated  int  `json:"date_created"`
 	Completed  bool `json:"completed"`
 }
 
+var todos = []Todo {
+    {ID: "1", Title: "Work", Description: "Do the thing", DateCreated: 1699404506241, Completed: false},
+	{ID: "2", Title: "Personal Time", Description: "Go to gym", DateCreated: 1699404506241, Completed: false},
+	{ID: "3", Title: "Fun Time", Description: "Play games", DateCreated: 1699404506241, Completed: false},
+}
+
 func getTodos(c echo.Context) error {
-    return c.String(http.StatusOK, "Get Todos")
+    return c.JSON(http.StatusOK, todos)
 }
 
 func addTodo(c echo.Context) error {
