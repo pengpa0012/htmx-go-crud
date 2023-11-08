@@ -9,7 +9,14 @@
   <base href="http://localhost:9090/">
 </head>
   <body>
-    <button hx-get="/todos" hx-trigger="click" hx-swap="outerHTML" hx-target="#todos">Get Data</button>
-    <div id="todos"></div>
+    <div class="max-w-[400px] mx-auto my-12">
+      <h1 class="text-center mb-4">HTMX+GO Todo</h1>
+      <form hx-post="/addTodo" hx-target="#todos" class="grid place-items-center gap-4">
+        <input type="text" name="title" placeholder="Title" class="border p-2 rounded-md focus:outline-none w-full">
+        <textarea placeholder="Description" name="description" class="border p-2 rounded-md focus:outline-none min-h-[80px] max-h-[200px] w-full"></textarea>
+        <button type="submit" class="w-full bg-green-600 p-2 rounded-md text-white">Add</button>
+      </form>
+    </div>
+    <div hx-get="/todos" id="todos" class="text-center"></div>
   </body>
 </html>
