@@ -3,6 +3,7 @@ package main
 import (
     "net/http"
     "github.com/labstack/echo/v4"
+    "github.com/labstack/echo/v4/middleware"
 )
 
 type Todo struct {
@@ -20,7 +21,7 @@ var todos = []Todo {
 }
 
 func getTodos(c echo.Context) error {
-    return c.JSON(http.StatusOK, todos)
+    return c.HTML(http.StatusOK, "<h1>Add Todo</h1>")
 }
 
 func addTodo(c echo.Context) error {
@@ -37,6 +38,12 @@ func updateTodo(c echo.Context) error {
 
 func main() {
     e := echo.New()
+    
+    e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+        AllowOrigins: []string{"http://127.0.0.1:5500"},
+        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, "Hx-Current-Url", "Hx-Request",},
+    }))
+
     e.GET("/todos", getTodos)
     e.POST("/addTodo", addTodo)
     e.DELETE("/removeTodo/:id", removeTodo)
