@@ -38,10 +38,10 @@ func updateTodo(c echo.Context) error {
 
 func main() {
     e := echo.New()
-    
+
     e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
         AllowOrigins: []string{"http://127.0.0.1:5500"},
-        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, "Hx-Current-Url", "Hx-Request",},
+        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, "Hx-Current-Url", "Hx-Request", "Hx-Target"},
     }))
 
     e.GET("/todos", getTodos)

@@ -9,6 +9,7 @@
   <base href="http://localhost:9090/">
 </head>
   <body>
-    <button hx-get="/todos" hx-trigger="click" hx-swap="outerHTML">Get Data</button>
+    <button hx-get="/todos" hx-trigger="click" hx-swap="outerHTML" hx-target="#todos">Get Data</button>
+    <div id="todos"></div>
   </body>
 </html>
