@@ -6,6 +6,7 @@ import (
     "github.com/labstack/echo/v4/middleware"
     "math/rand"
     "time"
+    "strconv"
 )
 
 type Todo struct {
@@ -43,12 +44,34 @@ func addTodo(c echo.Context) error {
 }
 
 func removeTodo(c echo.Context) error {
-    id := c.QueryParam("id")
-    return c.JSON(http.StatusOK, id)
+    id := c.Param("id")
+
+    parseID, _ := strconv.Atoi(id)
+
+    for index, todo := range todos {
+        if todo.ID == parseID {
+            todos = append(todos[:index], todos[index+1:]...)
+            return c.JSON(http.StatusCreated, todos) 
+        }
+    }
+
+    return c.JSON(http.StatusNotFound, "Error remove todo")
 }
 
 func updateTodo(c echo.Context) error {
-    id := c.QueryParam("id")
+    id := c.Param("id")
+    title := c.FormValue("title")
+    description := c.FormValue("description")
+    parseID, _ := strconv.Atoi(id)
+
+    for index, todo := range todos {
+        if todo.ID == parseID {
+            todos[index].Title = title
+            todos[index].Description = description
+            return c.JSON(http.StatusCreated, todos) 
+        }
+    }
+
     return c.JSON(http.StatusOK, id)
 }
 
