@@ -33,13 +33,18 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 }
 
 func getTodos(c echo.Context) error {
-    return c.JSON(http.StatusOK, todos)
+    return c.Render(http.StatusOK, "todos.html", todos)
 }
 
 func addTodo(c echo.Context) error {
     rand.Seed(time.Now().UnixNano())
     title := c.FormValue("title")
     description := c.FormValue("description")
+
+    if title == "" || description == "" {
+        return c.Render(http.StatusOK, "todos.html", todos)
+    }
+
     todo := Todo {
         ID: rand.Intn(1000), 
         Title: title,
@@ -49,7 +54,7 @@ func addTodo(c echo.Context) error {
 
     todos = append(todos, todo)
 
-    return c.JSON(http.StatusOK, todos)
+    return c.Render(http.StatusOK, "todos.html", todos)
 }
 
 func removeTodo(c echo.Context) error {
