@@ -1,12 +1,13 @@
 package main
 
 import (
+    "io"
     "net/http"
     "github.com/labstack/echo/v4"
-    "github.com/labstack/echo/v4/middleware"
     "math/rand"
     "time"
     "strconv"
+    "html/template"
 )
 
 type Todo struct {
@@ -21,6 +22,14 @@ var todos = []Todo {
     {ID: 1, Title: "Work", Description: "Do the thing", DateCreated: time.Now(), Completed: false},
 	{ID: 2, Title: "Personal Time", Description: "Go to gym", DateCreated: time.Now(), Completed: false},
 	{ID: 3, Title: "Fun Time", Description: "Play games", DateCreated: time.Now(), Completed: false},
+}
+
+type Template struct {
+    templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+    return t.templates.ExecuteTemplate(w, name, data)
 }
 
 func getTodos(c echo.Context) error {
@@ -75,17 +84,22 @@ func updateTodo(c echo.Context) error {
     return c.JSON(http.StatusOK, id)
 }
 
+func Home(c echo.Context) error {
+    return c.Render(http.StatusOK, "index.html", "/")
+}
+
 func main() {
     e := echo.New()
 
-    e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-        AllowOrigins: []string{"http://127.0.0.1:5500"},
-        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, "Hx-Current-Url", "Hx-Request", "Hx-Target"},
-    }))
+    t := &Template{
+        templates: template.Must(template.ParseGlob("web/templates/*.html")),
+    }
 
+    e.Renderer = t
+    e.GET("/", Home)
     e.GET("/todos", getTodos)
     e.POST("/addTodo", addTodo)
     e.DELETE("/removeTodo/:id", removeTodo)
     e.PATCH("/updateTodo/:id", updateTodo)
-    e.Logger.Fatal(e.Start(":9090"))
+    e.Logger.Fatal(e.Start(":5000"))
 }
