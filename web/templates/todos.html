@@ -10,8 +10,9 @@
   <body>
     <ul id="todos" class="text-center">
       {{ range . }}
-      <li>
+      <li class="flex justify-center">
         <strong>{{ .Title }}</strong>: {{ .Description }}
+        <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-red-500 text-white ml-[10px]" hx-delete="/removeTodo/{{.ID}}" hx-target="#todos">x</button>
       </li>
       {{ end }}
     </ul>

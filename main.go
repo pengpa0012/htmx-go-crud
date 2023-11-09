@@ -65,7 +65,7 @@ func removeTodo(c echo.Context) error {
     for index, todo := range todos {
         if todo.ID == parseID {
             todos = append(todos[:index], todos[index+1:]...)
-            return c.JSON(http.StatusCreated, todos) 
+            return c.Render(http.StatusOK, "todos.html", todos)
         }
     }
 
@@ -82,7 +82,7 @@ func updateTodo(c echo.Context) error {
         if todo.ID == parseID {
             todos[index].Title = title
             todos[index].Description = description
-            return c.JSON(http.StatusCreated, todos) 
+            return c.Render(http.StatusOK, "todos.html", todos)
         }
     }
 
