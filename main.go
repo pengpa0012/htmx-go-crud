@@ -72,6 +72,20 @@ func removeTodo(c echo.Context) error {
     return c.JSON(http.StatusNotFound, "Error remove todo")
 }
 
+func getTodo(c echo.Context) error {
+    id := c.Param("id")
+
+    parseID, _ := strconv.Atoi(id)
+
+    for index, todo := range todos {
+        if todo.ID == parseID {
+            return c.Render(http.StatusOK, "todo.html", todos[index])
+        }
+    }
+
+    return c.JSON(http.StatusNotFound, "Error edit todo")
+}
+
 func updateTodo(c echo.Context) error {
     id := c.Param("id")
     title := c.FormValue("title")
@@ -82,7 +96,7 @@ func updateTodo(c echo.Context) error {
         if todo.ID == parseID {
             todos[index].Title = title
             todos[index].Description = description
-            return c.Render(http.StatusOK, "todos.html", todos)
+            return c.Render(http.StatusOK, "todo.html", todos[index])
         }
     }
 
@@ -103,6 +117,7 @@ func main() {
     e.Renderer = t
     e.GET("/", Home)
     e.GET("/todos", getTodos)
+    e.GET("/getTodo/:id", getTodo)
     e.POST("/addTodo", addTodo)
     e.DELETE("/removeTodo/:id", removeTodo)
     e.PATCH("/updateTodo/:id", updateTodo)
