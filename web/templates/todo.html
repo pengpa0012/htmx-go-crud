@@ -8,11 +8,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
   <body>
-    <li class="flex justify-center flex-col gap-2 todo my-2">
-      <input type="text" value="{{ .Title }}" class="border p-2 rounded-md focus:outline-none w-full" />
-      <textarea type="text" value="{{ .Description }}" class="border p-2 rounded-md focus:outline-none min-h-[80px] max-h-[200px] w-full">{{ .Description }}</textarea>
-      <!-- <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-red-green text-white ml-[10px]" hx-get="/getTodo/{{.ID}}" hx-swap=".todo">cancel</button>
-      <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-red-500 text-white ml-[10px]" hx-patch="/updateTodo/{{.ID}}" hx-target="#todos">confirm</button> -->
+    <li class="flex justify-center my-2" id="todo">
+      <strong>{{ .Title }}</strong>: {{ .Description }}
+      <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-green-500 text-white ml-[10px]" hx-get="/getTodo/{{.ID}}?type=edit" hx-target="closest li" hx-swap="outerHTML">e</button>
+      <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-red-500 text-white ml-[10px]" hx-delete="/removeTodo/{{.ID}}" hx-target="#todos">x</button>
     </li>
   </body>
 </html>

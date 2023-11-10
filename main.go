@@ -74,11 +74,15 @@ func removeTodo(c echo.Context) error {
 
 func getTodo(c echo.Context) error {
     id := c.Param("id")
+    todoType := c.QueryParam("type")
 
     parseID, _ := strconv.Atoi(id)
 
     for index, todo := range todos {
         if todo.ID == parseID {
+            if todoType == "edit" {
+                return c.Render(http.StatusOK, "todoUpdate.html", todos[index])
+            }
             return c.Render(http.StatusOK, "todo.html", todos[index])
         }
     }

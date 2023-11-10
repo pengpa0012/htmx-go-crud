@@ -12,7 +12,7 @@
       {{ range . }}
       <li class="flex justify-center my-2" id="todo">
         <strong>{{ .Title }}</strong>: {{ .Description }}
-        <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-green-500 text-white ml-[10px]" hx-get="/getTodo/{{.ID}}" hx-target="closest li" hx-swap="outerHTML">e</button>
+        <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-green-500 text-white ml-[10px]" hx-get="/getTodo/{{.ID}}?type=edit" hx-target="closest li" hx-swap="outerHTML">e</button>
         <button class="h-[20px] w-[20px] flex justify-center items-center rounded-full bg-red-500 text-white ml-[10px]" hx-delete="/removeTodo/{{.ID}}" hx-target="#todos">x</button>
       </li>
       {{ end }}
